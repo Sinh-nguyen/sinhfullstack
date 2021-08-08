@@ -60,7 +60,7 @@ let updateUserData = (data) => {
         user.address = data.address;
 
         await user.save();
-        let allUsers = await db.User.findAll()
+        let allUsers = await db.User.findAll();
         resolve(allUsers);
       } else {
         resolve();
@@ -80,10 +80,25 @@ let getUserInfoById = (userId) => {
       });
       if (user) {
         resolve(user);
-      } 
-      else {
+      } else {
         resolve({});
       }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let deleteUserById = (userId) => {
+  return new Promise(async(resolve, reject) => {
+    try {
+      let user = await db.User.findOne({
+        where: { id: userId },
+      });
+      if (user) {
+        await user.destroy();
+      }
+      resolve();
     } catch (e) {
       reject(e);
     }
@@ -95,4 +110,5 @@ module.exports = {
   getAllUser: getAllUser,
   getUserInfoById: getUserInfoById,
   updateUserData: updateUserData,
+  deleteUserById: deleteUserById,
 };
