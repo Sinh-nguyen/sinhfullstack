@@ -8,7 +8,7 @@ let handleUserLogin = (email, password) => {
       let isExist = await checkUserEmail(email);
       if (isExist) {
         let user = await db.User.findOne({
-          atrributes: ["email", "roleId", "password"],
+          attributes: ["email", "roleId", "password"],
           where: { email: email },
           raw: true,
         });
@@ -16,7 +16,7 @@ let handleUserLogin = (email, password) => {
           let check = await bcrypt.compareSync(password, user.password);
           if (check) {
             userData.errCode = 0;
-            userData.errMessage = "ok";
+            userData.errMessage = "Ok";
 
             delete user.password;
             userData.user = user;
@@ -26,7 +26,7 @@ let handleUserLogin = (email, password) => {
           }
         } else {
           userData.errCode = 2;
-          userData.errMessage = "User not Found";
+          userData.errMessage = "User is not Found";
         }
       } else {
         userData.errCode = 1;
@@ -43,7 +43,7 @@ let handleUserLogin = (email, password) => {
 let checkUserEmail = (userEmail) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let user = await db.user.findOne({
+      let user = await db.User.findOne({
         where: { email: userEmail },
       });
 
@@ -58,6 +58,6 @@ let checkUserEmail = (userEmail) => {
   });
 };
 
-module.export = {
+module.exports = {
   handleUserLogin: handleUserLogin,
 };
